@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal Kelulusan - SMK Muhammadiyah 2 Kediri</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+        background: radial-gradient(circle at top, #0b1f3a, #050d1c);
+        color: #fff;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .container {
+        text-align: center;
+        max-width: 600px;
+        width: 100%;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #f5b800;
+        color: #000;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 12px;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+
+    h1 {
+        font-size: 28px;
+        margin-bottom: 5px;
+        line-height: 1.2;
+    }
+
+    h1 span {
+        color: #f5b800;
+    }
+
+    p {
+        font-size: 14px;
+        color: #aaa;
+        margin-bottom: 25px;
+    }
+
+    .search-box {
+        display: flex;
+        background: #0e223f;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #1f3a63;
+        margin-bottom: 20px;
+    }
+
+    .search-box input {
+        flex: 1;
+        padding: 15px;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: #fff;
+    }
+
+    .search-box button {
+        background: #f5b800;
+        border: none;
+        padding: 12px 25px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .search-box button:hover {
+        background: #d49f00;
+    }
+
+    /* Styling Hasil Pencarian */
+    #hasil-pencarian {
+        margin-top: 20px;
+        padding: 20px;
+        border-radius: 10px;
+        background: #162d50;
+        display: none; /* Sembunyi sebelum dicari */
+        border: 1px solid #f5b800;
+    }
+
+    .features {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 25px;
+        gap: 10px;
+    }
+
+    .card {
+        flex: 1;
+        background: #0e223f;
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 12px;
+        color: #ccc;
+        border: 1px solid #1f3a63;
+    }
+
+    footer {
+        margin-top: 30px;
+        font-size: 11px;
+        color: #666;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="badge">PENGUMUMAN RESMI</div>
+
+    <h1>Selamat Datang di Portal <br><span>Pengumuman Kelulusan</span></h1>
+
+    <p>Masukkan nama lengkap Anda untuk mengecek status kelulusan.</p>
+
+    <div class="search-box">
+        <input type="text" id="inputNama" placeholder="Contoh: Arba Marina Juwita">
+        <button onclick="cekStatus()">Cek Status</button>
+    </div>
+
+    <div id="hasil-pencarian">
+        <h2 id="resNama" style="color: #f5b800;"></h2>
+        <p id="resKelas" style="margin-bottom: 10px;"></p>
+        <div id="resStatus" style="font-size: 20px; font-weight: bold; padding: 10px; border-radius: 5px;"></div>
+    </div>
+
+    <div class="features">
+        <div class="card">🔒 Data Aman<br><small>Informasi terjaga kerahasiaannya</small></div>
+        <div class="card">⚡ Real-time<br><small>Hasil langsung ditampilkan</small></div>
+        <div class="card">📊 Resmi<br><small>Data dari sekolah</small></div>
+    </div>
+
+    <footer>
+        © 2026 SMK Muhammadiyah 2 Kediri. Hak Cipta Dilindungi.
+    </footer>
+
+</div>
+
+<script>
+    async function cekStatus() {
+        const namaInput = document.getElementById('inputNama').value;
+        const hasilDiv = document.getElementById('hasil-pencarian');
+        
+        // GANTI URL DI BAWAH INI DENGAN URL GOOGLE APPS SCRIPT KAMU
+        const urlAPI = "URL_WEB_APP_DARI_GOOGLE_SCRIPT"; 
+
+        if(!namaInput) {
+            alert("Harap masukkan nama lengkap!");
+            return;
+        }
+
+        // Tampilkan loading sederhana
+        document.querySelector('button').innerText = "Mencari...";
+        
+        try {
+            const response = await fetch(`${urlAPI}?nama=${encodeURIComponent(namaInput)}`);
+            const data = await response.json();
+
+            hasilDiv.style.display = "block";
+            
+            if (data.status !== "Tidak Ditemukan") {
+                document.getElementById('resNama').innerText = namaInput.toUpperCase();
+                document.getElementById('resKelas').innerText = "Kelas: " + data.kelas;
+                document.getElementById('resStatus').innerText = data.status;
+                
+                // Warna hijau jika lulus
+                if(data.status.toUpperCase() === "LULUS") {
+                    document.getElementById('resStatus').style.backgroundColor = "#28a745";
+                    document.getElementById('resStatus').style.color = "#fff";
+                } else {
+                    document.getElementById('resStatus').style.backgroundColor = "#dc3545";
+                    document.getElementById('resStatus').style.color = "#fff";
+                }
+            } else {
+                document.getElementById('resNama').innerText = "Data Tidak Ditemukan";
+                document.getElementById('resKelas').innerText = "Periksa kembali penulisan nama Anda.";
+                document.getElementById('resStatus').innerText = "-";
+                document.getElementById('resStatus').style.backgroundColor = "transparent";
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Gagal terhubung ke database. Pastikan URL Script benar.");
+        } finally {
+            document.querySelector('button').innerText = "Cek Status";
+        }
+    }
+</script>
+
+</body>
+</html>
