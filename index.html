@@ -24,10 +24,11 @@
     }
 
     .container {
-        text-align: center;
-        max-width: 600px;
-        width: 100%;
-    }
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+    margin-top: 80px; /* Tambahkan ini agar tidak tertutup header */
+}
 
     .badge {
         display: inline-block;
@@ -121,9 +122,17 @@
     }
 </style>
 </head>
-
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <body>
-
+   
+<header style="display: flex; align-items: center; padding: 15px 5%; background: rgba(14, 34, 63, 0.8); backdrop-filter: blur(10px); position: fixed; top: 0; width: 100%; z-index: 1000; border-bottom: 1px solid #1f3a63;">
+    <img src="https://www.google.com/imgres?q=logo%20SMK%20Muhammadiyah%202%20kediri&imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Finstagram%2Fsmkmudakediri%2Fprofile_pic.jpg&imgrefurl=https%3A%2F%2Fwww.instagram.com%2Fsmkmudakediri%2F&docid=RYaKxnqHGN-sGM&tbnid=i2JpNAkc4ZgL0M&vet=12ahUKEwi__8i1xo-UAxVhzDgGHeC6BV0QnPAOegQIGhAB..i&w=224&h=224&hcb=2&ved=2ahUKEwi__8i1xo-UAxVhzDgGHeC6BV0QnPAOegQIGhAB" alt="Logo Sekolah" style="height: 40px; margin-right: 15px;">
+    <div>
+        <div style="font-weight: bold; font-size: 14px; color: #f5b800;">SMK MUHAMMADIYAH 2</div>
+        <div style="font-size: 11px; color: #fff; letter-spacing: 1px;">KOTA KEDIRI</div>
+    </div>
+</header>
+   
 <div class="container">
 
     <div class="badge">PENGUMUMAN RESMI</div>
@@ -184,18 +193,31 @@
                 
                 // Warna hijau jika lulus
                 if(data.status.toUpperCase() === "LULUS") {
-                    document.getElementById('resStatus').style.backgroundColor = "#28a745";
-                    document.getElementById('resStatus').style.color = "#fff";
-                } else {
-                    document.getElementById('resStatus').style.backgroundColor = "#dc3545";
-                    document.getElementById('resStatus').style.color = "#fff";
-                }
-            } else {
-                document.getElementById('resNama').innerText = "Data Tidak Ditemukan";
-                document.getElementById('resKelas').innerText = "Periksa kembali penulisan nama Anda.";
-                document.getElementById('resStatus').innerText = "-";
-                document.getElementById('resStatus').style.backgroundColor = "transparent";
-            }
+    document.getElementById('resStatus').style.backgroundColor = "#28a745";
+    document.getElementById('resStatus').style.color = "#fff";
+    
+    // EFEK KONFETI & KEMBANG API
+    var duration = 5 * 1000;
+    var animationEnd = Date.now() + duration;
+    var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+    function randomInRange(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    var interval = setInterval(function() {
+      var timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
+      }
+
+      var particleCount = 50 * (timeLeft / duration);
+      // Kembang api di posisi acak
+      confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+      confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+    }, 250);
+}
         } catch (error) {
             console.error("Error:", error);
             alert("Gagal terhubung ke database. Pastikan URL Script benar.");
