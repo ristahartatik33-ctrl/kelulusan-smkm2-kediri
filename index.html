@@ -74,7 +74,7 @@
     </div>
 
     <div id="hasil-pencarian">
-        <img id="resFoto" src="" class="foto-siswa">
+        <img id="resFotoo" src="" class="foto-siswa">
         <h2 id="resNama" style="color: #f5b800; margin-bottom: 5px;"></h2>
         <p id="resKelas" style="margin-bottom: 15px; color: #ccc;"></p>
         <div id="resStatus" style="font-size: 22px; font-weight: bold; padding: 15px; border-radius: 8px;"></div>
@@ -89,9 +89,14 @@
     async function cekStatus() {
         const namaInput = document.getElementById('inputNama').value;
         const hasilDiv = document.getElementById('hasil-pencarian');
-        const fotoImg = document.getElementById('resFoto');
+        const fotoImg = document.getElementById('resFotoo');
         const audio = document.getElementById('suaraLulus');
         const btn = document.querySelector('.search-box button');
+        
+        // misalnya nama file gambar: budi.jpg
+        const namaFile = "logo smk muh 2 HD.png";
+        // ambil dari folder yang sama
+        fotoImg.src = namaFile;
         
         // URL API Web App Google Script Anda
         const urlAPI = "https://script.google.com/macros/s/AKfycbwn8TT5HZR7gcZyJt8dIPZO-9pnh0BgTVqcI9uZZXvj3wotXeVPYKjbilESybtDsmddUQ/exec"; 
