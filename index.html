@@ -59,11 +59,13 @@
     </div>
 
     <div id="hasil-pencarian">
-        <h2 id="resNama" style="color: #f5b800; margin-bottom: 5px;"></h2>
-        <p id="resKelas" style="margin-bottom: 15px; color: #fff; font-size: 16px;"></p>
-        <div id="resStatus" style="font-size: 22px; font-weight: bold; padding: 15px; border-radius: 8px;"></div>
-    </div>
-
+    <img id="resFoto" src="" alt="Foto Siswa" style="width: 120px; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; border: 2px solid #f5b800; display: none;">
+    
+    <h2 id="resNama" style="color: #f5b800; margin-bottom: 5px;"></h2>
+    <p id="resKelas" style="margin-bottom: 15px; color: #fff; font-size: 16px;"></p>
+    <div id="resStatus" style="font-size: 22px; font-weight: bold; padding: 15px; border-radius: 8px;"></div>
+</div>
+    
     <div class="features">
         <div class="card"> Data Aman<br>Informasi terjaga</div>
         <div class="card"> Real-time<br>Hasil langsung</div>
@@ -104,14 +106,29 @@
 
             hasilDiv.style.display = "block";
             
-            if (data.status !== "Tidak Ditemukan") {
-                document.getElementById('resNama').innerText = namaInput.toUpperCase();
-                document.getElementById('resKelas').innerText = "Kelas: " + data.kelas;
-                document.getElementById('resStatus').innerText = data.status;
-                
-                if(data.status.toUpperCase() === "LULUS") {
-                    document.getElementById('resStatus').style.backgroundColor = "#28a745";
-                    document.getElementById('resStatus').style.color = "#fff";
+           // ... di dalam fetch data ...
+if (data.status !== "Tidak Ditemukan") {
+    document.getElementById('resNama').innerText = data.namaLengkap; // Pakai nama lengkap dari database
+    document.getElementById('resKelas').innerText = "Kelas: " + data.kelas;
+    document.getElementById('resStatus').innerText = data.status;
+    
+    // Tampilkan Foto jika ada linknya
+    const fotoImg = document.getElementById('resFoto');
+    if(data.foto) {
+        fotoImg.src = data.foto;
+        fotoImg.style.display = "inline-block";
+    } else {
+        fotoImg.style.display = "none";
+    }
+
+    if(data.status.toUpperCase() === "LULUS") {
+        document.getElementById('resStatus').style.backgroundColor = "#28a745";
+        document.getElementById('resStatus').style.color = "#fff";
+        loopingKonfeti();
+        audio.play();
+    }
+}
+// ... sisa kode lainnya ...
                     
                     // AKTIFKAN MUSIK & KONFETI LOOPING
                     audio.play().catch(e => console.log("Audio butuh klik user"));
